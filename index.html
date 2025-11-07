@@ -25,6 +25,86 @@
 
     const ROAD_TOP = 600;
 
+    class MenuScene extends Phaser.Scene {
+        constructor() {
+            super("MenuScene");
+        }
+
+        preload() {
+
+            this.load.image("sky", "./images/sky1.jpeg");
+            this.load.image("road", "./images/road.jpeg");
+            this.load.image("car", "./images/car.png");
+        }
+
+        create() {
+
+            let bg = this.add.image(GAME_WIDTH/2, GAME_HEIGHT/2, "sky");
+            bg.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
+
+
+            this.add.text(GAME_WIDTH/2, 300, "MARK RACER", {
+                fontSize: "80px",
+                color: "#ffffff",
+                fontStyle: "bold"
+            }).setOrigin(0.5);
+
+
+            let startBtn = this.add.text(GAME_WIDTH/2, 600, "START", {
+                fontSize: "70px",
+                color: "#ff0000"
+            }).setOrigin(0.5).setInteractive();
+
+
+            startBtn.on("pointerdown", () => {
+                this.scene.start("GameScene");
+            });
+        }
+    }
+
+
+    class GameScene extends Phaser.Scene {
+        constructor() {
+            super("GameScene");
+        }
+
+        create() {
+
+            this.sky = this.add.image(GAME_WIDTH/2, 300, "sky");
+            this.sky.setDisplaySize(GAME_WIDTH, 600);
+
+
+            this.road = this.add.tileSprite(GAME_WIDTH/2, 900, GAME_WIDTH, 600, "road");
+
+
+            this.car = this.physics.add.sprite(75, 1000, "car");
+            this.car.setScale(0.2);
+            this.car.setCollideWorldBounds(true);
+
+
+            this.car.body.setBoundsRectangle(
+                new Phaser.Geom.Rectangle(0, ROAD_TOP, GAME_WIDTH, GAME_HEIGHT - ROAD_TOP)
+            );
+
+            this.cursors = this.input.keyboard.createCursorKeys();
+        }
+
+        update() {
+
+            this.road.tilePositionX += 1;
+
+
+            this.car.setVelocity(0);
+
+            if (this.cursors.up.isDown) {
+                this.car.setVelocityY(-200);
+            } else if (this.cursors.down.isDown) {
+                this.car.setVelocityY(200);
+            }
+        }
+    }
+
+
     const config = {
         type: Phaser.AUTO,
         width: GAME_WIDTH,
@@ -32,52 +112,11 @@
         physics: {
             default: 'arcade'
         },
-        scene: { preload, create, update }
+        scene: [MenuScene, GameScene]
     };
-
-    let sky;
-    let road;
-    let car;
-    let cursors;
 
     new Phaser.Game(config);
 
-    function preload() {
-        this.load.image("sky", "./images/sky1.jpeg");
-        this.load.image("road", "./images/road.jpeg");
-        this.load.image("car", "./images/car.png");
-    }
-
-    function create() {
-
-        sky = this.add.image(GAME_WIDTH/2, 300, "sky");
-        sky.setDisplaySize(GAME_WIDTH, 600);
-
-        road = this.add.tileSprite(GAME_WIDTH/2, 900, GAME_WIDTH, 600, "road");
-
-
-        car = this.physics.add.sprite(75, 1000, "car");
-        //car.body.setSize(200, 250);
-        car.setScale(0.2);
-        car.setCollideWorldBounds(true);
-
-        car.body.setBoundsRectangle(new Phaser.Geom.Rectangle(0, ROAD_TOP, GAME_WIDTH, GAME_HEIGHT - ROAD_TOP));
-
-        cursors = this.input.keyboard.createCursorKeys();
-    }
-
-    function update() {
-
-        road.tilePositionX += 1;
-
-        car.setVelocity(0);
-
-        if (cursors.up.isDown) {
-            car.setVelocityY(-200);
-        } else if (cursors.down.isDown) {
-            car.setVelocityY(200);
-        }
-    }
 </script>
 
 </body>
