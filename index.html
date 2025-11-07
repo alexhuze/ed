@@ -57,7 +57,8 @@
 
 
         car = this.physics.add.sprite(75, 500, "car");
-        car.setScale(0.3);
+        car.body.setSize(200, 250);
+        //car.setScale(0.3);
         car.setCollideWorldBounds(true);
 
         car.body.setBoundsRectangle(new Phaser.Geom.Rectangle(0, ROAD_TOP, GAME_WIDTH, GAME_HEIGHT - ROAD_TOP));
