@@ -1,5 +1,83 @@
 <!DOCTYPE html>
-<html>
-<head>Game for Mark</head>
-<body><h1>Here will be Phaser game for Mark</h1></body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mark Racer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+</head>
+<body>
+
+<script>
+    const GAME_WIDTH = 400;
+    const GAME_HEIGHT = 600;
+
+    const ROAD_TOP = 300;
+
+    const config = {
+        type: Phaser.AUTO,
+        width: GAME_WIDTH,
+        height: GAME_HEIGHT,
+        physics: {
+            default: 'arcade'
+        },
+        scene: { preload, create, update }
+    };
+
+    let sky;
+    let road;
+    let car;
+    let cursors;
+
+    new Phaser.Game(config);
+
+    function preload() {
+        this.load.image("sky", "./images/sky.gif");
+        this.load.image("road", "https://i.imgur.com/3r8j0kT.png");
+        this.load.image("car", "https://i.imgur.com/QZQn4q9.png");
+    }
+
+    function create() {
+
+        sky = this.add.image(GAME_WIDTH/2, 150, "sky");
+        sky.setDisplaySize(GAME_WIDTH, 300);
+
+        road = this.add.tileSprite(GAME_WIDTH/2, 450, GAME_WIDTH, 300, "road");
+
+
+        car = this.physics.add.sprite(75, 500, "car");
+        car.setScale(0.5);
+        car.setCollideWorldBounds(true);
+
+        car.body.setBoundsRectangle(new Phaser.Geom.Rectangle(0, ROAD_TOP, GAME_WIDTH, GAME_HEIGHT - ROAD_TOP));
+
+        cursors = this.input.keyboard.createCursorKeys();
+    }
+
+    function update() {
+
+        road.tilePositionX += 2;
+
+        car.setVelocity(0);
+
+        if (cursors.up.isDown) {
+            car.setVelocityY(-200);
+        } else if (cursors.down.isDown) {
+            car.setVelocityY(200);
+        }
+    }
+</script>
+
+</body>
 </html>
