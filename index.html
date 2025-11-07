@@ -20,10 +20,10 @@
 <body>
 
 <script>
-    const GAME_WIDTH = 400;
-    const GAME_HEIGHT = 600;
+    const GAME_WIDTH = 800;
+    const GAME_HEIGHT = 1200;
 
-    const ROAD_TOP = 300;
+    const ROAD_TOP = 600;
 
     const config = {
         type: Phaser.AUTO,
@@ -50,13 +50,13 @@
 
     function create() {
 
-        sky = this.add.image(GAME_WIDTH/2, 150, "sky");
-        sky.setDisplaySize(GAME_WIDTH, 300);
+        sky = this.add.image(GAME_WIDTH/2, 300, "sky");
+        sky.setDisplaySize(GAME_WIDTH, 600);
 
-        road = this.add.tileSprite(GAME_WIDTH/2, 450, GAME_WIDTH, 300, "road");
+        road = this.add.tileSprite(GAME_WIDTH/2, 900, GAME_WIDTH, 600, "road");
 
 
-        car = this.physics.add.sprite(75, 500, "car");
+        car = this.physics.add.sprite(75, 1000, "car");
         //car.body.setSize(200, 250);
         car.setScale(0.2);
         car.setCollideWorldBounds(true);
