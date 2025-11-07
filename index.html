@@ -45,7 +45,7 @@
     function preload() {
         this.load.image("sky", "./images/sky1.jpeg");
         this.load.image("road", "./images/road.jpeg");
-        this.load.image("car", "https://i.imgur.com/QZQn4q9.png");
+        this.load.image("car", "./images/car.png");
     }
 
     function create() {
@@ -57,7 +57,7 @@
 
 
         car = this.physics.add.sprite(75, 500, "car");
-        car.setScale(0.5);
+        car.setScale(0.3);
         car.setCollideWorldBounds(true);
 
         car.body.setBoundsRectangle(new Phaser.Geom.Rectangle(0, ROAD_TOP, GAME_WIDTH, GAME_HEIGHT - ROAD_TOP));
@@ -67,7 +67,7 @@
 
     function update() {
 
-        road.tilePositionX += 2;
+        road.tilePositionX += 1;
 
         car.setVelocity(0);
 
