@@ -11,19 +11,19 @@
         }
         canvas {
             display: block;
-            width: 100vw;
-            height: 100vh;
+
         }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
 </head>
 <body>
 
 <script>
-    const GAME_WIDTH = 800;
-    const GAME_HEIGHT = 1200;
+    const GAME_WIDTH = 1800;
+    const GAME_HEIGHT = 1000;
 
-    const ROAD_TOP = 600;
+    const ROAD_TOP = 400;
 
     class MenuScene extends Phaser.Scene {
         constructor() {
@@ -32,9 +32,13 @@
 
         preload() {
 
-            this.load.image("sky", "./images/sky1.jpeg");
-            this.load.image("road", "./images/road.jpeg");
-            this.load.image("car", "./images/car.png");
+            this.load.image("sky", "./images/sky3.jpeg");
+            this.load.image("road", "./images/road1.jpeg");
+            this.load.image("cloud", "./images/claud.png");
+            this.load.spritesheet("carAnim", "./images/car-sprite.png", {
+            frameWidth: 220,
+            frameHeight: 220
+        });
         }
 
         create() {
@@ -45,7 +49,7 @@
 
             this.add.text(GAME_WIDTH/2, 300, "MARK RACER", {
                 fontSize: "80px",
-                color: "#ffffff",
+                color: "#ff0000",
                 fontStyle: "bold"
             }).setOrigin(0.5);
 
@@ -70,15 +74,24 @@
 
         create() {
 
+           //this.cloud.setScale(0.5);
             this.sky = this.add.image(GAME_WIDTH/2, 300, "sky");
             this.sky.setDisplaySize(GAME_WIDTH, 600);
+        this.cloud = this.add.image(100, 100, "cloud");
+        this.cloud2 = this.add.image(100, 250, "cloud");
+            this.road = this.add.tileSprite(GAME_WIDTH/2, 800, GAME_WIDTH, 600, "road");
+            this.anims.create({
+              key: "carMove",
+              frames: this.anims.generateFrameNumbers("carAnim", { start: 0, end: 3 }),
+              frameRate: 10,
+              repeat: -1
+            });
 
+            this.car = this.physics.add.sprite(75, 800, "carAnim");
+            this.car.play("carMove");
+            //this.car.setDisplaySize(220, 220);
+            //this.car.setScale(0.2);
 
-            this.road = this.add.tileSprite(GAME_WIDTH/2, 900, GAME_WIDTH, 600, "road");
-
-
-            this.car = this.physics.add.sprite(75, 1000, "car");
-            this.car.setScale(0.2);
             this.car.setCollideWorldBounds(true);
 
 
@@ -90,7 +103,18 @@
         }
 
         update() {
+        this.cloud.x += 1; //
 
+
+        if (this.cloud.x > GAME_WIDTH + 100) {
+            this.cloud.x = 0;
+        }
+        this.cloud2.x += 2; //
+
+
+        if (this.cloud2.x > GAME_WIDTH + 150) {
+            this.cloud2.x = 0;
+        }
             this.road.tilePositionX += 1;
 
 
@@ -100,6 +124,10 @@
                 this.car.setVelocityY(-200);
             } else if (this.cursors.down.isDown) {
                 this.car.setVelocityY(200);
+            } else if (this.cursors.left.isDown) {
+          this.car.setVelocityX(-200);
+            } else if (this.cursors.right.isDown) {
+          this.car.setVelocityX(200);
             }
         }
     }
